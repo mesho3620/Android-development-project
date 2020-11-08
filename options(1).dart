@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'dailies.dart';
 import 'main.dart';
 
-class options_1 extends StatelessWidget {
+class Options_1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.lightBlue[300],
         body: Container(
+          decoration:
+              BoxDecoration(border: Border.all(width: 3, color: Colors.black)),
           padding: new EdgeInsets.symmetric(vertical: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               new Container(
-                color: Colors.yellow[300],
+                decoration: BoxDecoration(
+                    color: Colors.yellow[300],
+                    border: Border.all(width: 3, color: Colors.black)),
                 width: 600,
                 height: 80,
                 child: Row(
@@ -27,22 +31,20 @@ class options_1 extends StatelessWidget {
                           decorationThickness: 5),
                     ),
                     new GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, "myRoute");
-                      },
+                      onTap: () {},
                       child: new Text("Permission"),
                     ),
                     new GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, "myRoute");
-                      },
+                      onTap: () {},
                       child: new Text("Notifications"),
                     ),
                   ],
                 ),
               ),
               new Container(
-                color: Colors.grey[300],
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    border: Border.all(width: 3, color: Colors.black)),
                 width: 600,
                 height: 500,
                 child: Row(
@@ -105,7 +107,7 @@ class options_1 extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => sign_In()),
+                    MaterialPageRoute(builder: (context) => Sign_In()),
                   );
                 },
               ),
