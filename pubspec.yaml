@@ -35,6 +35,7 @@ dependencies:
   flutter_staggered_grid_view: "^0.3.0"
   flutter_circular_chart: ^0.1.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -44,6 +45,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+
   assets:
     - assets/images/
     - assets/characters/
@@ -56,12 +58,21 @@ flutter:
     - assets/icons/GLogo.png
     - assets/characters/Hero/Hero1.jpg
     - assets/characters/Pet/Pet1.png
-
-
+    
+    
+  
   uses-material-design: true
 
 
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
 
+  # To add assets to your application, add an assets section, like this:
+  assets:
+     - assets/
+  #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -88,3 +99,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
