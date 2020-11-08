@@ -8,11 +8,11 @@ import 'package:social_share_plugin/social_share_plugin.dart';
 void main() {
   runApp(MaterialApp(
     title: 'Navigation Basics',
-    home: sign_In(),
+    home: Sign_In(),
   ));
 }
 
-class sign_In extends StatelessWidget {
+class Sign_In extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,7 +27,9 @@ class sign_In extends StatelessWidget {
                 fontWeight: FontWeight.w900, color: Colors.deepPurple[500]),
           ),
           new Container(
-            color: Colors.yellow,
+            decoration: BoxDecoration(
+                color: Colors.yellow,
+                border: Border.all(width: 3, color: Colors.black)),
             width: 600,
             height: 225,
             child: Column(
@@ -37,7 +39,6 @@ class sign_In extends StatelessWidget {
                     'Please enter your email address',
                     textScaleFactor: 1.5,
                   ),
-                  new Container(),
                   TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(hintText: 'Email'),
@@ -56,7 +57,7 @@ class sign_In extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => dailies()),
+                  MaterialPageRoute(builder: (context) => Dailies()),
                 );
               },
               highlightColor: Colors.yellow[400],
@@ -87,7 +88,7 @@ class sign_In extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => options_1()),
+                  MaterialPageRoute(builder: (context) => Options_1()),
                 );
               },
             ),
