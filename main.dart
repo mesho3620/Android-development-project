@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'modules/main_page.dart';
+import 'package:inv1/inventory.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,9 +12,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+
         primarySwatch: Colors.blue,
       ),
-      home: ChatPage(),
+      home: Inv(),
     );
   }
 }
+
