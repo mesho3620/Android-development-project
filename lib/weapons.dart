@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'product_details.dart';
+
 class weapons extends StatelessWidget{
   @override
   Widget build(BuildContext context){
@@ -28,16 +30,25 @@ class weapons extends StatelessWidget{
               ],
             ),
 
-          )
+          ),
+          SizedBox(height: 15.0,)
         ],
       ),
     );
   }
   Widget _Weapon(String Name,String price,String imgPath,bool add,bool isFavorite, context ){
     return Padding(
-      padding: EdgeInsets.only(top: 15.0,bottom: 5.0,left:5.0 ,right: 5.0),
+      padding: EdgeInsets.only(top: 5.0,bottom: 5.0,left:5.0 ,right: 5.0),
       child: InkWell(
-        onTap: (){},
+        onTap: (){
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context)=>ShopDetail(
+            assetPath: imgPath,
+                weaponPrice:price,
+                weaponname:Name,
+            )
+          ));
+        },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
@@ -59,21 +70,21 @@ class weapons extends StatelessWidget{
                   children: [
                     isFavorite ? Icon(Icons.favorite,color: Colors.red,) :
                         Icon(Icons.favorite_border,color:Colors.red,)
-                  ],
+                  ],//is fav
                 ),
               ),
               Hero(
                 tag:imgPath,
                 child: Container(
-                  height: 70,
-                  width: 70,
+                  height: 75.0,
+                  width: 75.0,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(imgPath), fit: BoxFit.contain)
                     )
                   ),
                 ),
-              SizedBox(height: 17),
+              SizedBox(height: 7.0),
               Text(price,
               style: TextStyle(
                 color: Colors.red,fontSize: 12
@@ -83,7 +94,32 @@ class weapons extends StatelessWidget{
         style: TextStyle(
               color: Colors.black,fontSize: 12
         ),
-        )
+        ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                    color:Color(0xFFEBEBEB),//silver
+                  height: 1.0,
+                ),
+              ),
+              Padding(
+                padding:EdgeInsets.only(left:5.0,right:5.0),
+                    child:Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if(!add) ...[// if add there is no price as its already bought
+                    Icon(Icons.shopping_basket,color: Colors.red,size: 12.0,),
+                          Text('Buy',
+                              style:TextStyle(color:Colors.deepOrange, fontSize: 12.0
+                              ),
+                              )
+
+
+                        ]
+                      ],
+    )
+              )
+
             ],
           ),
         ),
