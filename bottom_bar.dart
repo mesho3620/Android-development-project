@@ -39,7 +39,7 @@ class BottomBar extends StatelessWidget {
           child:Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-            Icon(Icons.chat_rounded,color: Colors.deepOrange,),
+            Icon(Icons.backup_table_sharp,color: Colors.deepOrange,),
               Icon(Icons.settings,color: Colors.deepOrange,)
      ]
 
