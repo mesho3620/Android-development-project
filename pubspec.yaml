@@ -1,4 +1,4 @@
-name: chat11
+name: project_v1
 description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
@@ -27,17 +27,31 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
+  
+  cupertino_icons: ^0.1.2
+  google_fonts: ^0.3.5
+  percent_indicator: ^2.1.7+2
+    charts_common: ^0.9.0
+  charts_flutter: ^0.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
+flutter: 
+  assets:
+    - assets/background/
+    - assets/background/img1.png
+    - assets/avatar/
+    - assets/avatar/hero1.png
+    - assets/pet/
+    - assets/pet/pet1.png
+    - images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -45,9 +59,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-     - images/
-
+  # assets:
+  #  - images/a_dot_burr.jpeg
+  #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

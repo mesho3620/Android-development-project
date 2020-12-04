@@ -1,22 +1,35 @@
-import 'package:flutter/material.dart';
-import 'package:inv1/inventory.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'package:inv1/inventory.dart';
+import 'statistics.dart';
+import 'addTask.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'src/welcomePage.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Task Hero',
       theme: ThemeData(
-
-        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
+          bodyText1: GoogleFonts.acme(textStyle: textTheme.bodyText1),
+        ),
       ),
-      home: Inv(),
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(
+        child: WelcomePage(),
+     // child: DonutAutoLabelChart.withSampleData(),
+     // child: MyCustomForm(),
+     // child: Inv(),
+      ),
     );
   }
 }
+
 

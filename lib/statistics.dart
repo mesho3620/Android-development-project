@@ -1,351 +1,93 @@
+/// Donut chart with labels example. This is a simple pie chart with a hole in
+/// the middle.
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:flutter_sparkline/flutter_sparkline.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
-import 'options(1).dart';
-import 'main.dart';
 
-class statistics extends StatelessWidget {
-  // var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
-  var data1 = [0.0,-2.0,3.5,-2.0,0.5,0.7,0.8,1.0,2.0,3.0,3.2];
-  final GlobalKey<AnimatedCircularChartState> _chartKey = new GlobalKey<AnimatedCircularChartState>();
-  List<CircularStackEntry> data = <CircularStackEntry>[
-    new CircularStackEntry(
-      <CircularSegmentEntry>[
-        new CircularSegmentEntry(500.0, Colors.red[200], rankKey: 'Q1'),
-        new CircularSegmentEntry(1000.0, Colors.green[200], rankKey: 'Q2'),
-        new CircularSegmentEntry(2000.0, Colors.blue[200], rankKey: 'Q3'),
-        new CircularSegmentEntry(1000.0, Colors.yellow[200], rankKey: 'Q4'),
-      ],
-      rankKey: 'Quarterly Profits',
-    ),
-  ];
+class DonutAutoLabelChart extends StatelessWidget {
+  final List<charts.Series> seriesList;
+  final bool animate;
+  final Duration d;
+
+  DonutAutoLabelChart(this.seriesList, {this.animate, this.d});
+
+  /// Creates a [PieChart] with sample data and no transition.
+  factory DonutAutoLabelChart.withSampleData() {
+    return new DonutAutoLabelChart(
+      _createSampleData(),
+      // Disable animations for image tests.
+      animate: true,
+        d:Duration(milliseconds: 2000),
+
+    );
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 400,
-        color: Colors.indigo,
-        child:
-        ListView(reverse: true, scrollDirection: Axis.vertical, children: [
-          Card(
-              color: Colors.lightBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.0),
-              ),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(
-                              50.0) //                 <--- border radius here
-                          ),
-                          border: Border.all(color: Colors.black, width: 4)),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(20),
-                                    width: 350,
-                                    // decoration: BoxDecoration(
-                                    //     borderRadius: BorderRadius.all(
-                                    //         Radius.circular(
-                                    //             50.0) //                 <--- border radius here
-                                    //     ),
-                                    //     border: Border.all(
-                                    //         color: Colors.black, width: 4)),
-                                    // child: Row(
-                                    //     mainAxisAlignment:
-                                    //     MainAxisAlignment.spaceEvenly,
-                                    //     // children: [
-                                    //     //   Icon(Icons.block),
-                                    //     //   Text('Daily Task 7'),
-                                    //     //   Icon(Icons.check_box),
-                                    //    // ]
-                                    // )
+
+    return MaterialApp(
+        home:	Scaffold(
+    appBar:	AppBar(	title:	Text('Welcome	to	Flutter'),	),
+          backgroundColor: Colors.white,
+    body:	Center(
+    child:	new charts.PieChart(seriesList,
+        animate: animate,
+        animationDuration:d ,
+        // Configure the width of the pie slices to 60px. The remaining space in
+        // the chart will be left as a hole in the center.
+        //
+        // [ArcLabelDecorator] will automatically position the label inside the
+        // arc if the label will fit. If the label will not fit, it will draw
+        // outside of the arc with a leader line. Labels can always display
+        // inside or outside using [LabelPosition].
+        //
+        // Text style for inside / outside can be controlled independently by
+        // setting [insideLabelStyleSpec] and [outsideLabelStyleSpec].
+        //
+        // Example configuring different styles for inside/outside:
+        //       new charts.ArcLabelDecorator(
+        //          insideLabelStyleSpec: new charts.TextStyleSpec(...),
+        //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
+        defaultRenderer: new charts.ArcRendererConfig(
+            arcWidth: 100,
+            arcRendererDecorators: [new charts.ArcLabelDecorator()]))
+    ,
+    ),	//	Center
+    ),	//	Scaffold
+    );
 
 
-                                    decoration: BoxDecoration(
-
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                  child: new Sparkline(
-                                    data: data1,
-                                    lineColor:Color(0xffffff01),
-                                    lineWidth: 2.0,
-                                    pointsMode:PointsMode.all,
-                                    pointSize: 8.0,
-                                    fillMode: FillMode.below,
-                                    fillGradient: new LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [Colors.amber[800], Colors.amber[200]],
-                                    ),
-                                  ),),
-                              ],
-                            ),
-                            /*Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          // key: _chartKey,
-                                          // size: const Size(300.0, 300.0),
-                                          // initialChartData: data,
-                                          // chartType: CircularChartType.Pie,
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    margin: new EdgeInsets.all(5),
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                50.0) //                 <--- border radius here
-                                        ),
-                                        border: Border.all(
-                                            color: Colors.black, width: 4)),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Icon(Icons.block),
-                                          Text('Daily Task 1'),
-                                          Icon(Icons.check_box),
-                                        ])),
-                              ],
-                            ),*/
-                          ]),
-                    )
-                  ]))
-        ]));
   }
+
+  /// Create one series with sample hard coded data.
+  static List<charts.Series<LinearSales, int>> _createSampleData() {
+    final data = [
+      new LinearSales(0, 100,Colors.amber),
+      new LinearSales(1, 75,Colors.purple),
+      new LinearSales(2, 25,Colors.blueAccent),
+      new LinearSales(3, 5,Colors.pink),
+    ];
+
+    return [
+      new charts.Series<LinearSales, int>(
+        id: 'Sales',
+        domainFn: (LinearSales sales, _) => sales.year,
+        measureFn: (LinearSales sales, _) => sales.sales,
+        colorFn: (LinearSales sales,_)=>sales.color,
+        data: data,
+        // Set a label accessor to control the text of the arc label.
+        labelAccessorFn: (LinearSales row, _) => '${row.year}: ${row.sales}',
+      )
+    ];
+  }
+}
+
+/// Sample linear data type.
+class LinearSales {
+  final int year;
+  final int sales;
+  final charts.Color color;
+  LinearSales(this.year, this.sales,Color color)
+      :this.color=charts.Color(r:color.red,g: color.green,b: color.blue,a: color.alpha);
+
 }
