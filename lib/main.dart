@@ -1,3 +1,6 @@
+
+import 'statistics.dart';
+import 'addTask.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,7 +23,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: WelcomePage(),
+     // child: DonutAutoLabelChart.withSampleData(),
+     // child: MyCustomForm(),
       ),
     );
   }
 }
+
