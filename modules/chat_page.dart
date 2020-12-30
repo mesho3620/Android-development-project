@@ -5,6 +5,7 @@ class MainChat extends StatefulWidget{
   @override
   _MainChatState createState() => _MainChatState();
 }
+//feha chat wa search wl new returned userlist feha name wa text wa time wa picture
 
 class _MainChatState extends State<MainChat> {
   List<ChatUsers> chatUsers=[
