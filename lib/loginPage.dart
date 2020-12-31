@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_signup/src/forgot_password.dart';
-import 'package:flutter_login_signup/src/signup.dart';
-import 'package:flutter_login_signup/src/welcomePage.dart';
+import 'forgot_password.dart';
+import 'signup.dart';
+import 'welcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'tasks.dart';
 

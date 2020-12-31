@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:page2/bottom_bar.dart';
+import 'bottom_bar.dart';
 
-void main() {
-  runApp(Myapp());
-}
-class Myapp extends StatelessWidget{
-  final appTitle='Settings';
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-     title: appTitle,
-      home:GeneralSettings()
-    );
-  }
-}
+
 class GeneralSettings extends StatelessWidget {
 
   @override
