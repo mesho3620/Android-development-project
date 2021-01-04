@@ -1,35 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'inventory.dart';
-import 'statistics.dart';
-import 'addTask.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
-import 'welcomePage.dart';
-
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      title: 'Task Hero',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
-          bodyText1: GoogleFonts.acme(textStyle: textTheme.bodyText1),
-        ),
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: WelcomePage(),
-     // child: DonutAutoLabelChart.withSampleData(),
-     // child: MyCustomForm(),
-     // child: Inv(),
-      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
 
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final CameraPosition _intial =
+      CameraPosition(target: LatLng(29.969313688634006, 31.517392342328225));
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GoogleMap(
+        initialCameraPosition: _intial,
+        mapType: MapType.normal,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
