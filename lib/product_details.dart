@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bottom_bar.dart';
+import 'package:page2/bottom_bar.dart';
 
 
 class ShopDetail extends StatelessWidget {
