@@ -1,11 +1,11 @@
-
-import 'package:inv1/inventory.dart';
-import 'statistics.dart';
-import 'addTask.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'inventory.dart';
+import 'statistics.dart';
+import 'addTask.dart';
 
-import 'src/welcomePage.dart';
+
+import 'welcomePage.dart';
 
 void main() => runApp(MyApp());
 

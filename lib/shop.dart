@@ -1,35 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:page2/bottom_bar.dart';
-import 'package:page2/weapons.dart';
+import 'bottom_bar.dart';
+import 'weapons.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-         primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class Shop extends StatefulWidget {
+  Shop({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _ShopState createState() => _ShopState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+class _ShopState extends State<Shop> with SingleTickerProviderStateMixin {
   TabController _tabController;
   @override
   void initState(){
@@ -44,9 +27,10 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       backgroundColor: Colors.white60,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.black),
-          onPressed: (){},
-        ),
+            icon: Icon(Icons.arrow_back,color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
         title: Text('Shop',style:TextStyle(
           fontWeight: FontWeight.bold,fontSize: 20.0,color: Colors.black),),
       actions: <Widget>[

@@ -9,7 +9,7 @@ class Chatbb extends StatefulWidget{
   @override
   _ChatbbState createState() => _ChatbbState();
 }
-
+//differenciate between sender and reciever
 class _ChatbbState extends State<Chatbb> {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class _ChatbbState extends State<Chatbb> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: (widget.chatMessage.type==Messagetype.Receiver?Colors.blue:Colors.grey),
+            color: (widget.chatMessage.type==Messagetype.Receiver?Colors.blue:Colors.grey),//law type bt3ha sreciever ykon blue else gray
           ),
           padding: EdgeInsets.all(16.0),
 

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+//name image , wa state (online or busy)
 class  ChatBar extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {

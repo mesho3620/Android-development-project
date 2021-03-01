@@ -18,7 +18,7 @@ class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: (){//when clicked go to the chat details aw to send messages
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return ChatDetailsPage();
         }

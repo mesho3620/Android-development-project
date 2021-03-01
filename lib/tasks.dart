@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_login_signup/src/bottom_bar.dart';
-import 'package:flutter_login_signup/src/loginPage.dart';
+import 'bottom_bar.dart';
+import 'loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'welcomePage.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -52,7 +52,7 @@ class _TasksState extends State<Tasks> {
                   GestureDetector(
                     child: Container(
                         margin: EdgeInsets.all(10),
-                        width: 180,
+                        width: MediaQuery.of(context).size.width * 0.45,
                         height: 125,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -79,14 +79,14 @@ class _TasksState extends State<Tasks> {
                     },
                   ),
                   Container(
-                    width: 200,
+                    width: MediaQuery.of(context).size.width * 0.48,
                     height: 100,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           new LinearPercentIndicator(
-                            width: 170.0,
+                            width: MediaQuery.of(context).size.width * 0.3,
                             lineHeight: 17.0,
                             percent: 0.8,
                             center: Text(
@@ -104,7 +104,7 @@ class _TasksState extends State<Tasks> {
                             progressColor: Colors.red,
                           ),
                           new LinearPercentIndicator(
-                            width: 170.0,
+                            width: MediaQuery.of(context).size.width * 0.3,
                             lineHeight: 17.0,
                             percent: 0.288,
                             center: Text(
@@ -234,7 +234,7 @@ class _TasksState extends State<Tasks> {
                 );
               },
               child: Container(
-                width: 345,
+                width: MediaQuery.of(context).size.width * 0.831,
                 height: 70,
                 decoration: BoxDecoration(
                     color: Colors.grey,
@@ -268,7 +268,7 @@ class _TasksState extends State<Tasks> {
   Widget _weekly() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5),
-      width: MediaQuery.of(context).size.width - 3,
+      width: MediaQuery.of(context).size.width * 0.731,
       height: 70,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -309,7 +309,7 @@ class _TasksState extends State<Tasks> {
                 );
               },
               child: Container(
-                width: 345,
+                width: MediaQuery.of(context).size.width * 0.831,
                 height: 70,
                 decoration: BoxDecoration(
                     color: Colors.orange,
@@ -324,7 +324,7 @@ class _TasksState extends State<Tasks> {
                   subtitle: Text(
                     'specially your aunt',
                     style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15),
-                    overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.fade,
                   ),
                   trailing: IconButton(
                       icon: Icon(
@@ -384,7 +384,7 @@ class _TasksState extends State<Tasks> {
                 );
               },
               child: Container(
-                width: 345,
+                width: MediaQuery.of(context).size.width * 0.831,
                 height: 70,
                 decoration: BoxDecoration(
                     color: Colors.green,
@@ -459,7 +459,7 @@ class _TasksState extends State<Tasks> {
                 );
               },
               child: Container(
-                width: 345,
+                width: MediaQuery.of(context).size.width * 0.831,
                 height: 70,
                 decoration: BoxDecoration(
                     color: Colors.blue[500],
@@ -488,6 +488,8 @@ class _TasksState extends State<Tasks> {
       ),
     );
   }
+
+
 
   Widget _task_list() {
     return Container(
@@ -530,7 +532,7 @@ class _TasksState extends State<Tasks> {
           border: Border.all(width: 1),
         ),
         width: 250,
-        height: 350,
+        height: MediaQuery.of(context).size.height*0.9,
         child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -577,8 +579,8 @@ class _TasksState extends State<Tasks> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //Saeed put path to home screen here
-        },
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => Tasks()));
+              },
         backgroundColor: Colors.deepOrange,
         child: Icon(Icons.home),
       ),
