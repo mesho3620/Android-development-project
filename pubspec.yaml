@@ -20,7 +20,14 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+flutter_icons:
+   android: true
+   ios: true
+   image_path: "assets/avatar/hero1.png"
+  
+
 dependencies:
+
   flutter:
     sdk: flutter
 
@@ -36,6 +43,15 @@ dependencies:
 #  cloud_firestore: ^0.14.4
   cloud_firestore: ^0.9.13
   firebase_auth: 0.8.4+1
+  flutter_local_notifications: ^4.0.1
+  flutter_native_timezone: ^1.0.4
+  web_socket_channel: ^1.1.0
+  firebase_messaging:
+  http: ^0.12.1
+  rxdart: ^0.24.1
+  path_provider: ^1.6.11
+  flutter_launcher_icons: ^0.7.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,7 +61,10 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
+
+flutter: 
+ 
+
   assets:
     - assets/background/
     - assets/background/img1.png
