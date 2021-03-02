@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'modules/main_page.dart';
 import 'inventory.dart';
 import 'shop.dart';
 import 'tasks.dart';
@@ -42,7 +43,7 @@ class BottomBar extends StatelessWidget {
           ),
           onPressed: (){
             // Navigator.pop(context,Inv());
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>Shop()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>ChatPage()));
           }),
 
 
