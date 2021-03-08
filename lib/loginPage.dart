@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 //import 'tasks.dart';
 import 'Widget/bezierContainer.dart';
 import 'modules/task_page.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -289,6 +290,26 @@ class _LoginPageState extends State<LoginPage> {
                                 fontWeight: FontWeight.w500))),
                   ),
                   _divider(),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Divider(),
+                        SignInButton(
+                          Buttons.GoogleDark,
+                          onPressed: () {},
+                        ),
+                        Divider(),
+                        SignInButton(
+                          Buttons.FacebookNew,
+                          onPressed: () {},
+                        ),
+                        Divider(),
+                        SignInButton(
+                          Buttons.Twitter,
+                          text: "Use Twitter",
+                          onPressed: () {},
+                        ),
+                      ]),
                   SizedBox(height: height * .055),
                   _createAccountLabel(),
                 ],
