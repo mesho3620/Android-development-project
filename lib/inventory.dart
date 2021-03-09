@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'tasks.dart';
 import 'bottom_bar.dart';
 
 class Inv extends StatefulWidget {
@@ -67,7 +66,7 @@ class _InvState extends State<Inv> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Tasks()));
+         // Navigator.push(context, MaterialPageRoute(builder: (context) => Tasks()));
         },
         backgroundColor: Colors.deepOrange,
         child: Icon(Icons.home),

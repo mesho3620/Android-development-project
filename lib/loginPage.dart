@@ -3,13 +3,13 @@ import 'forgot_password.dart';
 import 'signup.dart';
 import 'welcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'tasks.dart';
 import 'Widget/bezierContainer.dart';
 import 'modules/task_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
+
 }
 
 class _LoginPageState extends State<LoginPage> {

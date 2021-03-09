@@ -1,4 +1,6 @@
 // Define a custom Form widget.
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 
 class MyCustomForm extends StatefulWidget {
@@ -22,220 +24,260 @@ class MyCustomFormState extends State<MyCustomForm> {
   String T_name;
   String T_notes;
 
+  String taskname;
+  String tasknotes;
+  String tasktype;
+  String taskdifficulty;
+  String date;
+
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
 
+  final myController = TextEditingController();
+  final myController1 = TextEditingController();
+
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
-    return MaterialApp(
-      title: 'Welcome	to	Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Add Task'),
-        ),
-        body: Center(
-          child: Form(
-              key: _formKey,
-              child: ListView(padding: EdgeInsets.all(20.0), children: <Widget>[
-                // Add TextFormFields and ElevatedButton here.
-                SizedBox(
-                  height: 8.0,
-                ),
 
-                Container(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextFormField(
-                      onChanged: (T_name) {
-                        print("The value entered is : $T_name");
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(32.0)),
-                        labelText: "Task Name",
-                      ),
-                    )),
+    CollectionReference Tasks = Firestore.instance.collection('Tasks');
 
-                SizedBox(
-                  height: 8.0,
-                ),
+    Future<void> addTask() {
+      // Call the user's CollectionReference to add a new user
+      return Tasks
+          .add({
+        'taskname': myController.text, // John Doe
+        'tasknotes': myController1.text, // Stokes and Sons
+        'tasktype': tasktype, // 42
+        'taskdifficulty': taskdifficulty, // Stokes and Sons
+        'date': date,
+      })
+          .then((value) => print("Task Added"))
+          .catchError((error) => print("Failed to add task: $error"));
+    }
 
-                Container(
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Task'),
+      ),
+      body:
+      Center(
+        child: Form(
+            key: _formKey,
+            child: ListView(padding: EdgeInsets.all(20.0), children: <Widget>[
+              // Add TextFormFields and ElevatedButton here.
+              SizedBox(
+                height: 8.0,
+              ),
+
+              Container(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: TextFormField(
-                    onChanged: (T_notes) {
-                      print("The value entered is : $T_notes");
+                    controller: myController,
+                    onChanged: (T_name) {
+                      print("The value entered is : $T_name");
                     },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(32.0)),
-                      labelText: "Notes",
+                      labelText: "Task Name",
                     ),
-                    maxLines: null,
-                  ),
-                ),
+                  )),
 
-                SizedBox(
-                  height: 8.0,
-                ),
-                Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text("Easy"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsDiff(e),
-                            groupValue: group_value,
-                            value: 1,
-                            activeColor: Colors.green,
-                          ),
-                          Text("Medium"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsDiff(e),
-                            groupValue: group_value,
-                            value: 2,
-                            activeColor: Colors.blue,
-                          ),
-                          Text("Hard"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsDiff(e),
-                            groupValue: group_value,
-                            value: 3,
-                            activeColor: Colors.purple,
-                          ),
-                          Text("Very Hard"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsDiff(e),
-                            groupValue: group_value,
-                            value: 4,
-                            activeColor: Colors.orange,
-                          ),
-                        ]),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text("(5 exp)"),
-                        Text("(10 exp)"),
-                        Text("(15 exp)"),
-                        Text("(20 exp)"),
-                      ],
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text("Daily"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsType(e),
-                            groupValue: group_value2,
-                            value: 1,
-                            activeColor: Colors.green,
-                          ),
-                          Text("Weekly"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsType(e),
-                            groupValue: group_value2,
-                            value: 2,
-                            activeColor: Colors.blue,
-                          ),
-                          Text("Hobby"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsType(e),
-                            groupValue: group_value2,
-                            value: 3,
-                            activeColor: Colors.purple,
-                          ),
-                          Text("Habbit"),
-                          new Radio(
-                            onChanged: (int e) => _radButtonsType(e),
-                            groupValue: group_value2,
-                            value: 4,
-                            activeColor: Colors.orange,
-                          ),
-                        ]),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text("(5 gold)"),
-                        Text("(20 gold)"),
-                        Text("(50 gold)"),
-                        Text("(100 gold)"),
-                      ],
-                    )
-                  ],
-                ),
+              SizedBox(
+                height: 8.0,
+              ),
 
-                SizedBox(
-                  height: 10.0,
-                ),
-
-                Text(
-                  "${selectedDate.toLocal()}".split(' ')[0],
-                  style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                RaisedButton(
-                  onPressed: () => _selectDate(context), // Refer step 3
-                  child: Text(
-                    'Select date',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  ),
-                  color: Colors.greenAccent,
-                ),
-
-                SizedBox(
-                  height: 8.0,
-                ),
-
-                Text(
-                  "${selectedTime.toString()}".split(' ')[0],
-                  style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                RaisedButton(
-                  onPressed: () => _selectTime(context), // Refer step 3
-                  child: Text(
-                    'Select Time',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  ),
-                  color: Colors.greenAccent,
-                ),
-
-                ElevatedButton(
-                  onPressed: () {
-                    // Validate returns true if the form is valid, otherwise false.
-
-                    // If the form is valid, display a snackbar. In the real world,
-                    // you'd often call a server or save the information in a database.
-
-                    {
-                      Navigator.pop(context);
-                    }
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  controller: myController1,
+                  onChanged: (T_notes) {
+                    print("The value entered is : $T_notes");
                   },
-                  child: Text('Submit'),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(32.0)),
+                    labelText: "Notes",
+                  ),
+                  maxLines: null,
                 ),
-              ])),
-        ), //	Center
-      ), //	Scaffold
+              ),
+
+              SizedBox(
+                height: 8.0,
+              ),
+              Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Easy"),
+                        new Radio(
+                          onChanged: (int e) => _radButtonsDiff(e),
+                          groupValue: group_value,
+                          value: 1,
+                          activeColor: Colors.green,
+                        ),
+                        Text("Medium"),
+                        new Radio(
+                          onChanged: (int e) => _radButtonsDiff(e),
+                          groupValue: group_value,
+                          value: 2,
+                          activeColor: Colors.blue,
+                        ),
+                        Text("Hard"),
+                        new Radio(
+                          onChanged: (int e) => _radButtonsDiff(e),
+                          groupValue: group_value,
+                          value: 3,
+                          activeColor: Colors.purple,
+                        ),
+
+                      ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("(10 exp)"),
+                      Text("(15 exp)"),
+                      Text("(20 exp)"),
+                    ],
+                  ),
+                  Row(
+
+
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                      children: [
+
+
+                        Text("Daily"),
+                        new Radio(
+                          onChanged: (int e) => _radButtonsType(e),
+                          groupValue: group_value2,
+                          value: 1,
+                          activeColor: Colors.green,
+                        ),
+                        Text("Weekly"),
+                        new Radio(
+                          onChanged: (int e) => _radButtonsType(e),
+                          groupValue: group_value2,
+                          value: 2,
+                          activeColor: Colors.blue,
+                        ),
+                        Text("Hobby"),
+                        new Radio(
+                          onChanged: (int e) => _radButtonsType(e),
+                          groupValue: group_value2,
+                          value: 3,
+                          activeColor: Colors.purple,
+                        ),
+                        Text("Habit"),
+                        new Radio(
+                          onChanged: (int e) => _radButtonsType(e),
+                          groupValue: group_value2,
+                          value: 4,
+                          activeColor: Colors.orange,
+                        ),
+                      ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("(5 gold)"),
+                      Text("(20 gold)"),
+                      Text("(50 gold)"),
+                      Text("(100 gold)"),
+                    ],
+                  )
+                ],
+              ),
+
+              SizedBox(
+                height: 10.0,
+              ),
+
+              Text(
+                "${selectedDate.toLocal()}".split(' ')[0],
+                style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              RaisedButton(
+                onPressed: () => _selectDate(context), // Refer step 3
+                child: Text(
+                  'Select date',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                color: Colors.greenAccent,
+              ),
+
+              SizedBox(
+                height: 8.0,
+              ),
+
+              Text(
+                "${selectedTime.toString()}".split(' ')[0],
+                style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              RaisedButton(
+                onPressed: () => _selectTime(context), // Refer step 3
+                child: Text(
+                  'Select Time',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                color: Colors.greenAccent,
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  // Validate returns true if the form is valid, otherwise false.
+
+                  // If the form is valid, display a snackbar. In the real world,
+                  // you'd often call a server or save the information in a database.
+                  addTask();
+                  {
+                    Navigator.pop(context);
+                  }
+                },
+                child: Text('Submit'),
+              ),
+            ])),
+      ),
     );
   }
+
+
 
   void _radButtonsDiff(int e) {
     setState(() {
       if (e == 1) {
         group_value = 1;
+        taskdifficulty='Easy';
       } else if (e == 2) {
+        taskdifficulty='Medium';
         group_value = 2;
       } else if (e == 3) {
+        taskdifficulty='Hard';
         group_value = 3;
       } else if (e == 4) {
+        taskdifficulty='Very Hard';
         group_value = 4;
       }
     });
@@ -244,12 +286,16 @@ class MyCustomFormState extends State<MyCustomForm> {
   void _radButtonsType(int e) {
     setState(() {
       if (e == 1) {
+        tasktype='Dailies';
         group_value2 = 1;
       } else if (e == 2) {
+        tasktype='Weeklies';
         group_value2 = 2;
       } else if (e == 3) {
+        tasktype='Hobbies';
         group_value2 = 3;
       } else if (e == 4) {
+        tasktype='Habits';
         group_value2 = 4;
       }
     });
@@ -272,6 +318,7 @@ class MyCustomFormState extends State<MyCustomForm> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+        date= selectedDate.toString();
       });
   }
 
