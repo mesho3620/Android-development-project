@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">__NAME__</string>
+    <string name="title_activity_kimera">__TITLE_ACTIVITY__</string>
+    <string name="facebook_app_id">458812848596871</string>
+    <string name="fb_login_protocol_scheme">fb458812848596871</string>
+
+</resources>

@@ -2,12 +2,23 @@ import 'package:flutter/material.dart';
 import 'forgot_password.dart';
 import 'signup.dart';
 import 'welcomePage.dart';
+import 'package:facebook_sdk/facebook_sdk.dart';
+// import 'com.facebook.appevents.AppEventsLogger';
+// import 'package:facebook_sdk';
 import 'package:google_fonts/google_fonts.dart';
 import 'Widget/bezierContainer.dart';
 import 'modules/task_page.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginPage extends StatefulWidget {
+
+  // @override
+  // void onCreate() {
+  //   super.onCreate();
+  //   FacebookSdk.sdkInitialize(getApplicationContext());
+  //   AppEventsLogger.activateApp(this);
+  // }
+
   @override
   _LoginPageState createState() => _LoginPageState();
 
@@ -19,6 +30,16 @@ class _LoginPageState extends State<LoginPage> {
 
   String _email;
   String _password;
+
+  void fbLogin() async {
+    // await FacebookSdk.logOut();
+    FacebookLoginResult result = await FacebookSdk.logInWithReadPermissions(['email']);
+    print(result);
+    print(result.status);
+    print(result.accessToken);
+    print(result.accessToken.token);
+    print(result.errorMessage);
+  }
 
   void validateAndSave() {
     final FormState form = _formKey.currentState;
@@ -301,7 +322,7 @@ class _LoginPageState extends State<LoginPage> {
                         Divider(),
                         SignInButton(
                           Buttons.FacebookNew,
-                          onPressed: () {},
+                          onPressed: fbLogin,
                         ),
                         Divider(),
                         SignInButton(

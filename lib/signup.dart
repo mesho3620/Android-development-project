@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'Widget/bezierContainer.dart';
 import 'loginPage.dart';
 import 'welcomePage.dart';
@@ -272,47 +274,74 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    CollectionReference Contacts = Firestore.instance.collection('Accounts');
+
+
+
     return Scaffold(
-      body: Container(
-        height: height,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: -MediaQuery.of(context).size.height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer(),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: height * .2),
-                    _title(),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    _emailPasswordWidget(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _submitButton(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _divider(),
-                    _loginAccountLabel(),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(top: 40, left: 0, child: _backButton()),
-          ],
-        ),
-      ),
+      body: _buildBody(context,Contacts),
     );
   }
+
+  Widget _buildBody(BuildContext context,CollectionReference Contacts) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Contacts.snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return LinearProgressIndicator();
+        } else {
+          // List<String> contact = snapshot.data.documents
+          //     .map((documentSnapshot) => String.fromMap(documentSnapshot.data))
+          //     .toList();
+
+          // return _buildPage(context, contact,Contacts);
+        }
+      },
+    );
+  }
+
+  // Widget build(BuildContext context) {
+  //   final height = MediaQuery.of(context).size.height;
+  //   return Scaffold(
+  //     body: Container(
+  //       height: height,
+  //       child: Stack(
+  //         children: <Widget>[
+  //           Positioned(
+  //             top: -MediaQuery.of(context).size.height * .15,
+  //             right: -MediaQuery.of(context).size.width * .4,
+  //             child: BezierContainer(),
+  //           ),
+  //           Container(
+  //             padding: EdgeInsets.symmetric(horizontal: 20),
+  //             child: SingleChildScrollView(
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: <Widget>[
+  //                   SizedBox(height: height * .2),
+  //                   _title(),
+  //                   SizedBox(
+  //                     height: 50,
+  //                   ),
+  //                   _emailPasswordWidget(),
+  //                   SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   _submitButton(),
+  //                   SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   _divider(),
+  //                   _loginAccountLabel(),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //           Positioned(top: 40, left: 0, child: _backButton()),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
