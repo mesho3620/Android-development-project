@@ -74,7 +74,6 @@ class NotificationPlugin {
   }
 
   Future<void> showNotification() async {
-    DateTime dateTime = DateTime.now();
     var androidChannelSpecifics = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
@@ -90,10 +89,10 @@ class NotificationPlugin {
         android: androidChannelSpecifics, iOS: iosChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
-      'do Exercises at ${dateTime.hour}::${dateTime.minute}::${dateTime.second}',
-      '3 sets, 15 reps of tri with dumbells', //null
+      'Notification',
+      'A Task was just added successfully.', //null
       platformChannelSpecifics,
-      payload: 'New Payload',
+      payload: 'payload',
     );
   }
 

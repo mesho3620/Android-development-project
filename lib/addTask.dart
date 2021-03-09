@@ -1,7 +1,7 @@
 // Define a custom Form widget.
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
+import './notifications/NotificationPlugin.dart';
 
 class MyCustomForm extends StatefulWidget {
   @override
@@ -19,24 +19,24 @@ class MyCustomFormState extends State<MyCustomForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   bool CheckBoxValue = false;
-  int group_value;
-  int group_value2;
+  int group_value = 1;
+  int group_value2 = 1;
   String T_name;
   String T_notes;
 
   String taskname;
   String tasknotes;
-  String tasktype;
-  String taskdifficulty;
-  String date;
+  String tasktype = 'Dailies';
+  String taskdifficulty = 'Easy';
+  String date = DateTime.now().toString();
 
   final _formKey = GlobalKey<FormState>();
+
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
 
   final myController = TextEditingController();
   final myController1 = TextEditingController();
-
 
   @override
   void dispose() {
@@ -45,17 +45,16 @@ class MyCustomFormState extends State<MyCustomForm> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
+    final FormState form = _formKey.currentState;
 
     CollectionReference Tasks = Firestore.instance.collection('Tasks');
 
     Future<void> addTask() {
       // Call the user's CollectionReference to add a new user
-      return Tasks
-          .add({
+      return Tasks.add({
         'taskname': myController.text, // John Doe
         'tasknotes': myController1.text, // Stokes and Sons
         'tasktype': tasktype, // 42
@@ -66,14 +65,13 @@ class MyCustomFormState extends State<MyCustomForm> {
           .catchError((error) => print("Failed to add task: $error"));
     }
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Task'),
       ),
-      body:
-      Center(
+      body: Center(
         child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             key: _formKey,
             child: ListView(padding: EdgeInsets.all(20.0), children: <Widget>[
               // Add TextFormFields and ElevatedButton here.
@@ -85,6 +83,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: TextFormField(
                     controller: myController,
+                    validator: (T_name) {
+                      if (T_name.isEmpty) {
+                        return ('Task name cannot be blank');
+                      }
+                      return null;
+                    },
                     onChanged: (T_name) {
                       print("The value entered is : $T_name");
                     },
@@ -103,6 +107,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
                   controller: myController1,
+                  validator: (T_notes) {
+                    if (T_notes.isEmpty) {
+                      return ('Task name cannot be blank');
+                    }
+                    return null;
+                  },
                   onChanged: (T_notes) {
                     print("The value entered is : $T_notes");
                   },
@@ -144,7 +154,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                           value: 3,
                           activeColor: Colors.purple,
                         ),
-
                       ]),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -155,13 +164,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                     ],
                   ),
                   Row(
-
-
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
                       children: [
-
-
                         Text("Daily"),
                         new Radio(
                           onChanged: (int e) => _radButtonsType(e),
@@ -244,16 +248,23 @@ class MyCustomFormState extends State<MyCustomForm> {
                 ),
                 color: Colors.greenAccent,
               ),
-
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Validate returns true if the form is valid, otherwise false.
 
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
-                  addTask();
-                  {
-                    Navigator.pop(context);
+                  if (form.validate()) {
+                    form.save();
+                    await notificationPlugin.setOnNotificationClick(addTask);
+                    await notificationPlugin.showNotification();
+
+                    addTask();
+                    {
+                      Navigator.pop(context);
+                    }
+                  } else {
+                    return null;
                   }
                 },
                 child: Text('Submit'),
@@ -263,21 +274,19 @@ class MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
-
-
   void _radButtonsDiff(int e) {
     setState(() {
       if (e == 1) {
         group_value = 1;
-        taskdifficulty='Easy';
+        taskdifficulty = 'Easy';
       } else if (e == 2) {
-        taskdifficulty='Medium';
+        taskdifficulty = 'Medium';
         group_value = 2;
       } else if (e == 3) {
-        taskdifficulty='Hard';
+        taskdifficulty = 'Hard';
         group_value = 3;
       } else if (e == 4) {
-        taskdifficulty='Very Hard';
+        taskdifficulty = 'Very Hard';
         group_value = 4;
       }
     });
@@ -286,16 +295,16 @@ class MyCustomFormState extends State<MyCustomForm> {
   void _radButtonsType(int e) {
     setState(() {
       if (e == 1) {
-        tasktype='Dailies';
+        tasktype = 'Dailies';
         group_value2 = 1;
       } else if (e == 2) {
-        tasktype='Weeklies';
+        tasktype = 'Weeklies';
         group_value2 = 2;
       } else if (e == 3) {
-        tasktype='Hobbies';
+        tasktype = 'Hobbies';
         group_value2 = 3;
       } else if (e == 4) {
-        tasktype='Habits';
+        tasktype = 'Habits';
         group_value2 = 4;
       }
     });
@@ -318,15 +327,14 @@ class MyCustomFormState extends State<MyCustomForm> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        date= selectedDate.toString();
+        date = selectedDate.toString();
       });
-    if(picked == null)
-      {
-        setState(() {
-          selectedDate = DateTime.now();
-          date= selectedDate.toString();
-        });
-      }
+    if (picked == null) {
+      setState(() {
+        selectedDate = DateTime.now();
+        date = selectedDate.toString();
+      });
+    }
   }
 
   /// This decides which day will be enabled
