@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
 import '../components/chat_bar.dart';
 import '../components/chat_bb.dart';
@@ -11,23 +13,28 @@ import 'package:flutter/material.dart';
 
 class ChatDetailsPage extends StatefulWidget {
    String id;
+
+
    ChatDetailsPage(@required this.id);
-  @override
+
+
+   @override
   _ChatDetailsPageState createState() => _ChatDetailsPageState();
 }
 
 class _ChatDetailsPageState extends State<ChatDetailsPage> {
   DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-  List<ChatMessage> chatMessage = [
-    ChatMessage(message: "project at 10 am ", type: true, time: DateTime.parse("2019-07-19 08:40:23")),
-    ChatMessage(message: "10 am ?", type: false, time: DateTime.parse("2019-07-19 08:40:23")),
-    ChatMessage(message: "yes ", type: true, time: DateTime.parse("2019-07-19 08:40:23")),
-    ChatMessage(message: "ok ", type: false, time: DateTime.parse("2019-07-19 08:40:23")),
-    ChatMessage(message: "oh ", type: true, time: DateTime.parse("2019-07-19 08:40:23")),
-    ChatMessage(message: "oh ", type: false, time: DateTime.parse("2019-07-19 08:40:23")),
-  ];
+  // List<ChatMessage> chatMessage = [
+  //   ChatMessage(message: "project at 10 am ", type: true, time: DateTime.parse("2019-07-19 08:40:23")),
+  //   ChatMessage(message: "10 am ?", type: false, time: DateTime.parse("2019-07-19 08:40:23")),
+  //   ChatMessage(message: "yes ", type: true, time: DateTime.parse("2019-07-19 08:40:23")),
+  //   ChatMessage(message: "ok ", type: false, time: DateTime.parse("2019-07-19 08:40:23")),
+  //   ChatMessage(message: "oh ", type: true, time: DateTime.parse("2019-07-19 08:40:23")),
+  //   ChatMessage(message: "oh ", type: false, time: DateTime.parse("2019-07-19 08:40:23")),
+  // ];
 
   List<ChatMessage> mydata;
+
 
   List<ChatMenuItems> menuItem = [
     ChatMenuItems(
@@ -38,6 +45,18 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
         text: "Contact", icons: Icons.contact_phone, color: Colors.purple),
     ChatMenuItems(text: "Location", icons: Icons.map, color: Colors.red),
   ];
+
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
+
+
   void showModel() {
     showModalBottomSheet(
         context: context,
@@ -90,15 +109,19 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference Contacts = Firestore.instance.collection('Contacts').document(widget.id).collection('Chat');
+
+
+
     return Scaffold(
       appBar: ChatBar(),
-      body: _buildBody(context),
+      body: _buildBody(context,Contacts),
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody(BuildContext context,CollectionReference Contacts) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Contacts').document(widget.id).collection('Chat').snapshots(),
+      stream: Contacts.orderBy('time', descending: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LinearProgressIndicator();
@@ -107,23 +130,35 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
               .map((documentSnapshot) => ChatMessage.fromMap(documentSnapshot.data))
               .toList();
 
-          return _buildPage(context, contact);
+          return _buildPage(context, contact,Contacts);
         }
       },
     );
   }
 
-  Widget _buildPage(BuildContext context, List<ChatMessage> contactdata) {
+  Widget _buildPage(BuildContext context, List<ChatMessage> contactdata, CollectionReference Contacts) {
     mydata = contactdata;
     // _generateData(mydata);
+
+    Future<void> addMsg() {
+      // Call the user's CollectionReference to add a new user
+      return Contacts
+          .add({
+        'message': myController.text, // John Doe
+        'time': Timestamp.now(), // Stokes and Sons
+        'type': false // 42
+      })
+          .then((value) => print("msg sent"))
+          .catchError((error) => print("Failed to send msg: $error"));
+    }
+
     return Stack(
           children: <Widget>[
             ListView.builder(
               itemCount: mydata.length,
               shrinkWrap: true,
               padding: EdgeInsets.only(top: 10, bottom: 10),
-              physics:
-              NeverScrollableScrollPhysics(), //avoid scrolling the list
+              physics:AlwaysScrollableScrollPhysics(), //avoid scrolling the list
               itemBuilder: (context, index) {
                 return Chatbb(
                   chatMessage: mydata[index],
@@ -163,6 +198,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                       Expanded(
                         //widegt that expands child of row or collamn to fit the spaces
                         child: TextField(
+                          controller: myController,
                           decoration: InputDecoration(
                             hintText: "Type Message",
                             hintStyle: TextStyle(color: Colors.grey),
@@ -178,7 +214,9 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                 child: Container(
                     padding: EdgeInsets.only(right: 25, bottom: 60),
                     child: FloatingActionButton(
-                      onPressed: () {},
+                      onPressed: (){addMsg();
+                      myController.clear();},
+
                       child: Icon(
                         Icons.send,
                         color: Colors.white,

@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import '../bottom_bar.dart';
 import '../loginPage.dart';
-import '../addTask(1).dart';
+import '../addTask.dart';
 import '../inventory.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../welcomePage.dart';
@@ -11,51 +14,20 @@ import '../model/task_T.dart';
 import '../components/task.dart';
 
 class Tasks extends StatefulWidget {
+
+
   @override
   _TasksState createState() => _TasksState();
 }
 
 class _TasksState extends State<Tasks> {
-  List<task_details> taskD = [
-    task_details(
-      taskname: 'do dishes',
-      tasknotes: 'at 8 pm max',
-      tasktype: 'Daily',
-      taskdifficulty: 'Easy',
-      dateDay: '13:00',
-      dateMonth: '2021-02-17',
-    ),
-    task_details(
-      taskname: 'play tennis',
-      tasknotes: 'on 10 am max',
-      tasktype: 'Weekly',
-      taskdifficulty: 'Medium',
-      dateDay: '18:00',
-      dateMonth: '2021-02-20',
-    ),
-    task_details(
-      taskname: 'do cooking',
-      tasknotes: 'at 10 am max',
-      tasktype: 'Habbit',
-      taskdifficulty: 'Hard',
-      dateDay: '13:00',
-      dateMonth: '2021-02-17',
-    ),
-    task_details(
-      taskname: 'Wake up',
-      tasknotes: 'at 6 pm max',
-      tasktype: 'Hobby',
-      taskdifficulty: 'Very Hard',
-      dateDay: '13:00',
-      dateMonth: '2021-02-17',
-    )
-  ];
+  List<task_detail> mydata;
 
   Widget _avatar_window() {
     return Row(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width-3,
           height: 150,
           decoration: BoxDecoration(
             border: Border.all(width: 1),
@@ -207,21 +179,22 @@ class _TasksState extends State<Tasks> {
     );
   }
 
-  Widget _task_list() {
+  Widget _task_list(BuildContext context, List<task_detail> contact, CollectionReference Tasks) {
     return Container(
         padding: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           border: Border.all(width: 1),
           color: Colors.blue[300],
         ),
-        height: 500,
+        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: _task_scroll());
+        child: _task_scroll(context, contact,Tasks));
   }
 
-  Widget _task_scroll() {
+  Widget _task_scroll(BuildContext context, List<task_detail> taskD, CollectionReference Tasks) {
     return ListView(children: [
-      _add_task(),
+      _avatar_window(),
+            Container(height: 10, color: Colors.orange),
       SizedBox(
         height: 5,
       ),
@@ -231,22 +204,31 @@ class _TasksState extends State<Tasks> {
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return task_details(
-            taskname: taskD[index].taskname,
-            tasknotes: taskD[index].tasknotes,
-            tasktype: taskD[index].tasktype,
-            taskdifficulty: taskD[index].taskdifficulty,
-            dateDay: taskD[index].dateDay,
-            dateMonth: taskD[index].dateMonth,
+            taskdetail: taskD[index],
           );
         },
-      )
+      ),
+      _add_task(),
+
+
+
+
+
     ]);
   }
 
   @override
   Widget build(BuildContext context) {
+
+    CollectionReference Tasks = Firestore.instance.collection('Tasks');
+
     return Scaffold(
       appBar: AppBar(),
+      bottomNavigationBar: BottomBar(),
+      floatingActionButton:
+      FloatingActionButton(    backgroundColor: Colors.deepOrange,
+          child: Icon(Icons.home), onPressed: () {}),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       drawer: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -289,25 +271,44 @@ class _TasksState extends State<Tasks> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _avatar_window(),
-            Container(height: 10, color: Colors.orange),
-            _task_list(),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => Tasks()));
-        },
-        backgroundColor: Colors.deepOrange,
-        child: Icon(Icons.home),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomBar(),
+      // body: SafeArea(
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.start,
+      //     children: [
+      //       _avatar_window(),
+      //       Container(height: 10, color: Colors.orange),
+      //       _task_list(),
+      //     ],
+      //   ),
+      // ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Navigator.push(context, MaterialPageRoute(builder: (context) => Tasks()));
+      //   },
+      //   backgroundColor: Colors.deepOrange,
+      //   child: Icon(Icons.home),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: BottomBar(),
+      body: _buildBody(context,Tasks),
+
+    );
+  }
+  Widget _buildBody(BuildContext context,CollectionReference Tasks) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Tasks.snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return LinearProgressIndicator();
+        } else {
+          int index=0;
+          List<task_detail> contact = snapshot.data.documents
+              .map((documentSnapshot) => task_detail.fromMap(documentSnapshot.data))
+              .toList();
+
+          return _task_list(context, contact,Tasks);
+        }
+      },
     );
   }
 }

@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
-import '../addTask(1).dart';
+import '../addTask.dart';
+import '../model/task_T.dart';
 
 class task_details extends StatefulWidget {
-  String taskname;
-  String tasknotes;
-  String tasktype;
-  String taskdifficulty;
-  String dateDay;
-  String dateMonth;
-  bool visible = true;
-  task_details(
-      {@required this.taskname,
-      @required this.tasknotes,
-      @required this.tasktype,
-      @required this.taskdifficulty,
-      @required this.dateDay,
-      @required this.dateMonth});
+
+  task_detail taskdetail;
+  bool visible=true;
+  task_details({@required this.taskdetail});
+
+
+
   @override
   _taskDetailsState createState() => _taskDetailsState();
 }
@@ -44,13 +38,13 @@ class _taskDetailsState extends State<task_details> {
               width: 50,
               height: 70,
               decoration: BoxDecoration(
-                  color: (widget.tasktype == 'Daily')
+                  color: (widget.taskdetail.tasktype == 'Daily')
                       ? Colors.green[400]
-                      : (widget.tasktype == 'Weekly')
+                      : (widget.taskdetail.tasktype == 'Weekly')
                           ? Colors.blue[400]
-                          : (widget.tasktype == 'Hobby')
+                          : (widget.taskdetail.tasktype == 'Hobbies')
                               ? Colors.purple[400]
-                              : (widget.tasktype == 'Habbit')
+                              : (widget.taskdetail.tasktype == 'Habits')
                                   ? Colors.orange[400]
                                   : Colors.indigoAccent,
                   borderRadius: BorderRadius.circular(5),
@@ -83,26 +77,26 @@ class _taskDetailsState extends State<task_details> {
                   width: MediaQuery.of(context).size.width * 0.831,
                   height: 70,
                   decoration: BoxDecoration(
-                      color: (widget.taskdifficulty == 'Easy')
+                      color: (widget.taskdetail.taskdifficulty == 'Easy')
                           ? Colors.red[200]
-                          : (widget.taskdifficulty == 'Medium')
+                          : (widget.taskdetail.taskdifficulty == 'Medium')
                               ? Colors.orange
-                              : (widget.taskdifficulty == 'Hard')
+                              : (widget.taskdetail.taskdifficulty == 'Hard')
                                   ? Colors.blue[500]
-                                  : (widget.taskdifficulty == 'Very Hard')
+                                  : (widget.taskdetail.taskdifficulty == 'Very Hard')
                                       ? Colors.indigo[300]
                                       : Colors.indigoAccent,
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(width: 2)),
                   child: ListTile(
                     leading: Text(
-                      widget.taskname,
+                      widget.taskdetail.taskname,
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                      widget.tasknotes,
+                      widget.taskdetail.tasknotes,
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 15),
                       overflow: TextOverflow.ellipsis,

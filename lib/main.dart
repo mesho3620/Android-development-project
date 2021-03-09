@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'notifications/LocalNotificationScreen.dart';
 import 'inventory.dart';
 import 'statistics.dart';
 import 'addTask.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
-import 'welcomePage.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'dart:io';
+import 'welcomePage.dart';
+
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 void _enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
@@ -16,14 +19,13 @@ void _enablePlatformOverrideForDesktop() {
   }
 }
 
-void main() {
-  _enablePlatformOverrideForDesktop();
+void main() async {
+    _enablePlatformOverrideForDesktop();
 
-  runApp(MyApp());
+  runApp(HomeApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class HomeApp extends StatelessWidget {
 
   Future<bool> check() async {
     var connResult = await (Connectivity().checkConnectivity());
@@ -46,41 +48,50 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: MyHomePage(),
-        // child: DonutAutoLabelChart.withSampleData(),
-        // child: MyCustomForm(),
-        // child: Inv(),
-      ),
+      home: MyHomePage(),
+
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _connectionStatus = 'Unknown';
+  final FirebaseMessaging _messaging = FirebaseMessaging();
+  String userToken;
+  
+    String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
-    initConnectivity();
+
+    _messaging.getToken().then((token) {
+      print(token);
+      userToken = token;
+      
+          initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    });
   }
-
-  @override
+  
+    @override
   void dispose() {
     _connectivitySubscription.cancel();
     super.dispose();
   }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
+  
+    // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initConnectivity() async {
     ConnectivityResult result = ConnectivityResult.none;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -99,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return _updateConnectionStatus(result);
   }
-
+  
   var check = true;
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
@@ -124,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  @override
+    @override
   Widget build(BuildContext context) {
     if (check == false) {
       return Scaffold(
@@ -141,5 +152,6 @@ class _MyHomePageState extends State<MyHomePage> {
       return Scaffold(body: WelcomePage());
     }
     return null;
+
   }
 }

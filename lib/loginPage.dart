@@ -3,7 +3,6 @@ import 'forgot_password.dart';
 import 'signup.dart';
 import 'welcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'tasks.dart';
 import 'Widget/bezierContainer.dart';
 import 'modules/task_page.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
+
 }
 
 class _LoginPageState extends State<LoginPage> {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'modules/main_page.dart';
 import 'inventory.dart';
 import 'shop.dart';
-import 'tasks.dart';
 import 'settings.dart';
 
 
@@ -37,6 +36,8 @@ class BottomBar extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (context) =>Inv()));
                   }),
 
+
+
               IconButton(
           icon: Icon(Icons.chat,
             color: Colors.deepOrange,
@@ -57,6 +58,8 @@ class BottomBar extends StatelessWidget {
       }),
 
             ],
+
+
           ),
         );
 
