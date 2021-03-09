@@ -11,8 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'welcomePage.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 void _enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {

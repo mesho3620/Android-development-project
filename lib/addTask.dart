@@ -315,11 +315,18 @@ class MyCustomFormState extends State<MyCustomForm> {
       },
       selectableDayPredicate: _decideWhichDayToEnable,
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null)
       setState(() {
         selectedDate = picked;
         date= selectedDate.toString();
       });
+    if(picked == null)
+      {
+        setState(() {
+          selectedDate = DateTime.now();
+          date= selectedDate.toString();
+        });
+      }
   }
 
   /// This decides which day will be enabled
