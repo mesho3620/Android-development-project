@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_v1/editprofile.dart';
+import 'package:project_v1/maps.dart';
 import 'bottom_bar.dart';
-import 'editprofile.dart';
 
 class GeneralSettings extends StatelessWidget {
   @override
@@ -35,10 +36,6 @@ class GeneralSettings extends StatelessWidget {
                   child: ListTile(
                     onTap: () {
                       //for editing the profile
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePage()));
                     },
                     title: Text(
                       "Adham Hamzawy",
@@ -62,14 +59,28 @@ class GeneralSettings extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
                     children: <Widget>[
-                      Container(
-                        width: double.infinity,
-                        height: 1.0,
-                        color: Colors.grey.shade400,
+                      ListTile(
+                        leading: Icon(
+                          Icons.lock_outline,
+                          color: Colors.black,
+                        ),
+                        title: Text("Edit Profile"),
+                        trailing: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.black,
+                        ),
+                        onTap: () {
+                          //for editing the profile
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfilePage()));
+                          //change password
+                        },
                       ),
                       Container(
                         width: double.infinity,
-                        height: 5.0,
+                        height: 1.0,
                         color: Colors.grey.shade400,
                       ),
                       ListTile(
@@ -77,19 +88,22 @@ class GeneralSettings extends StatelessWidget {
                           Icons.map,
                           color: Colors.black,
                         ),
-                        title: Text("Change Location"),
+                        title: Text("Location"),
                         trailing: Icon(
                           Icons.keyboard_arrow_down,
                           color: Colors.black,
                         ),
                         onTap: () {
+                          //for editing the profile
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Maps()));
+
                           //change location
                         },
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 10.0),
               ])),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
